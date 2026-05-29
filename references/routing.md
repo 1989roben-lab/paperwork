@@ -30,6 +30,36 @@ Load `mongodb-new-workload.md` when the request includes any of:
 - customer name plus workload description plus estimated annual amount
 - a request to create internal workload submission language
 
+### Research Company
+
+Load `research-company.md` when the request includes any of:
+
+- `Research Company`
+- `research company`
+- `客户研究`
+- `研究客户`
+- `研究公司`
+- `Marketing lead`
+- `lead qualification`
+- `account prep`
+- `公司背景`
+- `业务简介`
+- `客户网址`
+- `公司人数`
+- `员工规模`
+- `人数趋势`
+- `营收趋势`
+- `业务趋势`
+- `海外业务`
+- `全球业务`
+- `近期新闻`
+- `WeChat news`
+- `微信公众号新闻`
+- `公众号近期动态`
+- `客户公众号`
+- `微信新闻`
+- a customer or company name plus a request to understand the business, employee size, revenue trend, overseas presence, recent news, or sales call talking points
+
 ## Future Routes
 
 Add new references as the user introduces new real paperwork cases. Use these suggested route names unless the user chooses a different naming convention:
@@ -41,7 +71,7 @@ Add new references as the user introduces new real paperwork cases. Use these su
 
 ## Ambiguity Handling
 
-If more than one route fits, choose the route with the most explicit field names. If no route fits, ask for:
+If more than one route fits, choose the route with the most explicit field names. If the user asks to research a company and create a New Workload, load `research-company.md` first, then `mongodb-new-workload.md`. If no route fits, ask for:
 
 1. the paperwork type or target system,
 2. the reader or approver,

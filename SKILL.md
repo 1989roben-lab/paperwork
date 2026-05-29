@@ -1,6 +1,6 @@
 ---
 name: paperwork
-description: Generate, normalize, and improve MongoDB internal paperwork and manager-ready business writing. Use when the user asks for company paperwork, MongoDB paperwork, internal submission text, approval or justification language, workload writeups, bilingual Chinese/English professional wording, or fields such as New Workload, Application Overview, Discovery Notes, Use Case, Next Steps, Why Anything, Why MongoDB, Why Now, NARR, close date, or customer/workload descriptions.
+description: Generate, normalize, and improve MongoDB internal paperwork and manager-ready business writing. Use when the user asks for company paperwork, MongoDB paperwork, internal submission text, approval or justification language, workload writeups, bilingual Chinese/English professional wording, or fields such as New Workload, Application Overview, Discovery Notes, Use Case, Next Steps, Why Anything, Why MongoDB, Why Now, NARR, close date, customer/workload descriptions, Research Company, customer research, Marketing lead research, company background, employee size, revenue trend, overseas business, recent news, WeChat news, 微信公众号新闻, 公众号近期动态, 客户公众号, or account preparation.
 ---
 
 # Paperwork
@@ -18,6 +18,7 @@ Use this skill as the general entry point for MongoDB company paperwork. Default
 ## Supported Paperwork
 
 - MongoDB New Workload paperwork: load `references/mongodb-new-workload.md`.
+- Research Company paperwork: load `references/research-company.md`.
 
 ## Expansion Pattern
 
