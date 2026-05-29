@@ -19,14 +19,19 @@ Create a concise Chinese company research form from a customer name, company web
 - Browse the internet by default because employee size, revenue trend, overseas business, and recent news can change.
 - Prefer public sources: company website, investor relations, annual reports, earnings releases, press releases, official blogs, official WeChat public accounts and reposts, hiring pages, LinkedIn, credible media, app stores, industry databases, and public company information pages.
 - If the company is public, prioritize annual reports, financial reports, investor relations pages, and earnings releases for revenue and trend.
-- If the company is private, do not invent exact revenue. Use public signals such as financing, hiring, product launches, market expansion, customer growth, app rankings, store footprint, partnerships, and media coverage to describe business trend.
+- If the company is private, do not stop at `未公开披露营收`. First search for approximate revenue scale, product revenue, GMV, downloads, grossing rankings, overseas revenue rankings, financing/valuation, IPO/prospectus materials, industry reports, and credible media estimates.
+- For game, consumer internet, SaaS, ecommerce, or app companies, use third-party data providers and industry media as proxy sources when official revenue is unavailable. Useful sources include Sensor Tower, data.ai, 点点数据, 七麦数据, GameLook, 伽马数据, QuestMobile, Similarweb, App Store / Google Play rankings, financing reports, and credible business media.
+- For private companies, do not invent exact revenue. If exact company revenue is unavailable, provide a clearly labeled approximate scale or trend based on third-party estimates, product-level revenue, publisher rankings, app rankings, financing/valuation, hiring, product launches, market expansion, customer growth, store footprint, partnerships, and media coverage.
+- Mark third-party estimates clearly with wording such as `第三方估算口径`, `行业报告口径`, `媒体引用口径`, or `产品流水/榜单代理指标`.
 - If sources conflict, say `公开来源口径不一致` and briefly explain the difference.
 - Do not present unsupported precise numbers. Use ranges or qualitative wording when sources are incomplete.
 - If the company name is ambiguous, use the provided website to confirm identity. If no website is provided and multiple companies plausibly match, ask the user to confirm the target company.
 - For recent-news discovery, use `$wechat-weixin-search-skill-fast` or its fast workflow to search WeChat Official Account / 搜狗微信 results for the target company.
 - Use WeChat sources mainly for product launches, version updates, brand events, exhibitions, partnerships, company announcements, AI/data/cloud signals, overseas expansion, and sales-useful business context; do not use them as the sole source for revenue, employee size, or financial trend.
 - Treat 搜狗微信 links as reference/search-result links, not confirmed original `mp.weixin.qq.com` article links, unless the user explicitly asks for slower article resolution.
+- If any WeChat/搜狗微信 result is selected as useful, list it as its own recent-news item with the concrete date, title/event, sales value, and source. Never collapse selected WeChat items into a generic summary such as `多条微信公众号结果`, `公众号相关信息`, or `版号、校招和 AI 相关信息`.
 - Select recent news by usefulness for sales conversation, not just by search rank or source type. Prefer product launches, organization changes, business innovation, market feedback, financing, earnings, overseas expansion, major partnerships, regulatory issues, or risk events.
+- Give timely and sales-useful WeChat/公众号 results a slight ranking boost in `近期新闻`, especially when they reveal fresh product launches, partnerships, overseas expansion, AI/data/cloud signals, security updates, or company announcements not yet well covered by official websites or mainstream media.
 - Exclude low-value WeChat results such as hiring, campus recruiting, internships, referrals, training, course registration, stock-only posts, and pure reposts without business context when enough better results exist.
 
 ## Output Language
@@ -71,8 +76,11 @@ Generate these fields in this order.
 ### 营收 / 业务趋势
 
 - For public companies, summarize the latest revenue direction from official reports when available.
-- For private companies, do not invent revenue. Use public business signals to infer whether the business appears to be growing, stable, declining, or unconfirmed.
-- Use one of: `增长`, `下降`, `持平`, or `公开信息未确认`, followed by concise evidence.
+- For private companies, search for approximate revenue scale before saying revenue is undisclosed. Look for IPO/prospectus materials, financing/valuation, credible media reports, industry reports, third-party estimates, product revenue, GMV, downloads, grossing rankings, overseas revenue rankings, and app/store ranking signals.
+- If exact company revenue is unavailable but useful proxy data exists, write the proxy and label the source type, for example `Sensor Tower 口径`, `行业报告口径`, `媒体引用口径`, or `产品流水/榜单代理指标`.
+- Summarize three things when possible: overall revenue scale or proxy scale, growth/decline direction, and the key growth or pressure signals.
+- Use business-friendly conclusions such as `增长`, `下降`, `持平`, `收入规模较大但增长不稳定`, `海外业务增长明显`, `新品接力仍是关键变量`, or `公开信息未确认`, followed by concise evidence.
+- Only use `公开信息未确认` after no useful public revenue, proxy, ranking, financing, or business-scale signal is found.
 
 ### 近期新闻
 
@@ -80,6 +88,8 @@ Generate these fields in this order.
 - Each item should include date or approximate timing, short title/event, why it matters for sales conversation, and source.
 - Merge official website, credible media, LinkedIn, app stores, official WeChat public accounts, and credible WeChat/搜狗微信 results into one ranked list. Do not create a separate `官方微信公众号补充` field.
 - When useful WeChat results exist, include about 2-4 WeChat/公众号 items in the 5-10 recent-news list. Only include WeChat results with `中`, `中高`, or `高` sales value.
+- Each included WeChat/公众号 item must be listed individually with its specific title/event. Do not group multiple selected WeChat items into one bullet.
+- Give newer WeChat/公众号 items a slight priority boost when they are sales-useful and concrete, but do not force low-value items into the list.
 - If WeChat results are mostly hiring, training, stock-only, unrelated, or low-value reposts, reduce or omit them and state `公众号公开结果中未发现足够高价值销售信号`.
 - Mark WeChat sources as `微信公众号/搜狗微信结果` or with the actual public account name when available.
 - Rank by sales usefulness, recency, and source reliability. Every item should explain why it is useful for a sales conversation, not just repeat the headline.
@@ -156,13 +166,14 @@ https://www.mihoyo.com/
 
 ### 营收 / 业务趋势
 
-米哈游为非上市公司，公开财务数据有限，不应编造具体营收。可从重点产品持续运营、全球发行、新内容更新和市场热度判断，业务趋势偏 `增长` 或 `保持强运营投入`，但需以公开新闻和第三方市场报告交叉验证。
+米哈游为非上市公司，不应编造官方营收，但应继续查找第三方估算和产品流水代理指标。若 Sensor Tower、data.ai、点点数据、七麦数据、GameLook、伽马数据或可信媒体披露产品收入、发行商排名、海外收入榜或下载/畅销榜表现，可用 `第三方估算口径` 或 `产品流水/榜单代理指标` 描述收入量级和趋势。若没有公司整体营收，可结合核心产品长线流水、全球发行、新内容更新、市场排名和新品表现判断业务趋势，并明确来源口径。
 
 ### 近期新闻
 
 1. 近期产品更新或版本发布：可用于了解其内容生产节奏和玩家运营压力。来源：官网/官方公告。
 2. 海外品牌或全球活动动态：可用于切入全球化运营和多区域数据管理话题。来源：可信媒体或官方新闻。
-3. 微信公众号/搜狗微信结果中的高价值产品、活动或合作动态：若内容与产品发布、出海、AI、数据、云、增长或合作相关，可纳入同一新闻列表；若主要是招聘、培训或低价值转载，则不强行采用。
+3. 2026-05-27｜5 月游戏版号观察，莉莉丝新品在列：可用于判断国内产品储备和上线节奏。来源：微信公众号/搜狗微信结果。
+4. 2026-02-27｜2 月游戏版号下发，莉莉丝产品在列：可作为持续产品管线信号。来源：微信公众号/搜狗微信结果。
 
 ### 销售沟通切入点
 
