@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paperwork"
+  short_description: "Draft MongoDB internal paperwork"
+  default_prompt: "Use $paperwork to draft concise bilingual MongoDB internal paperwork."
