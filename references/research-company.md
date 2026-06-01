@@ -14,10 +14,31 @@ Create a concise Chinese company research form from a customer name, company web
 
 - Country, region, industry, lead source, product interest, target contact, known workload, or sales context.
 
+## Fast Subtask Research Workflow
+
+Use this workflow for every company research request unless the user explicitly asks for a very short answer. The goal is to maximize speed by splitting the work into fixed research subtasks, while keeping one main agent responsible for final synthesis and accuracy.
+
+Do not use sub-agents, multi-agent delegation, or separate research agents by default. Only use sub-agents if the user explicitly asks for `sub-agent`, `multi-agent`, `多代理`, `多个研究员`, or equivalent wording. Otherwise, use one main agent to coordinate parallel tool calls, batched web searches, and the WeChat fast workflow.
+
+1. Start with a quick identity pass. Confirm the target company's official name, website, country or region, industry, parent/subsidiary relationship, and likely aliases. If the company name is ambiguous and no website is provided, ask the user to confirm before continuing.
+2. After identity is clear, break the research into these fixed subtasks:
+   - Identity and official source: official website, legal/common name, country or region, industry, parent/subsidiary relationship, and aliases.
+   - Company and business: core products, target customers, business model, regions, overseas/global footprint, app/store availability, partners, and major product lines.
+   - Employee and organization trend: LinkedIn, hiring pages, annual reports, public company profiles, layoff or expansion news, and recruiting activity.
+   - Revenue and business trend: official financials for public companies; for private companies, financing, valuation, IPO/prospectus materials, credible media, industry reports, third-party estimates, product revenue, GMV, downloads, grossing rankings, overseas revenue rankings, and app/store ranking signals.
+   - Recent public web news: official news, credible media, industry media, app stores, partner announcements, risk/regulatory events, and product launches.
+   - WeChat recent news: use `$wechat-weixin-search-skill-fast` or its fast workflow for WeChat Official Account / 搜狗微信 results.
+   - MongoDB relevance: infer likely MongoDB-relevant data scenarios only after the business, trend, and news subtasks have enough evidence.
+3. Run the subtasks as concurrently as the available tools allow. Batch ordinary web searches by combining multiple keywords per lane. Start WeChat search at the same time as public web news search. Read local references in parallel with external searches when possible.
+4. Synthesize the subtasks into one final answer. Deduplicate repeated events, reconcile source conflicts, rank recent news by sales value and reliability, and keep only the most useful evidence.
+5. Do not expose the internal subtasks, search lanes, or research process in the final paperwork. Output only the consolidated Company Research fields.
+
 ## Source And Research Rules
 
 - Browse the internet by default because employee size, revenue trend, overseas business, and recent news can change.
+- Use fast subtask research to improve speed, but never reduce verification quality. Parallelism is for collecting evidence faster, not for skipping source checks.
 - Prefer public sources: company website, investor relations, annual reports, earnings releases, press releases, official blogs, official WeChat public accounts and reposts, hiring pages, LinkedIn, credible media, app stores, industry databases, and public company information pages.
+- Source priority for factual claims is: official disclosure, financial report, filing, or prospectus first; then credible media and industry reports; then WeChat/搜狗微信 results; then social media, reposts, or low-context profiles.
 - If the company is public, prioritize annual reports, financial reports, investor relations pages, and earnings releases for revenue and trend.
 - If the company is private, do not stop at `未公开披露营收`. First search for approximate revenue scale, product revenue, GMV, downloads, grossing rankings, overseas revenue rankings, financing/valuation, IPO/prospectus materials, industry reports, and credible media estimates.
 - For game, consumer internet, SaaS, ecommerce, or app companies, use third-party data providers and industry media as proxy sources when official revenue is unavailable. Useful sources include Sensor Tower, data.ai, 点点数据, 七麦数据, GameLook, 伽马数据, QuestMobile, Similarweb, App Store / Google Play rankings, financing reports, and credible business media.
@@ -26,6 +47,7 @@ Create a concise Chinese company research form from a customer name, company web
 - If sources conflict, say `公开来源口径不一致` and briefly explain the difference.
 - Do not present unsupported precise numbers. Use ranges or qualitative wording when sources are incomplete.
 - If the company name is ambiguous, use the provided website to confirm identity. If no website is provided and multiple companies plausibly match, ask the user to confirm the target company.
+- Use exact dates where reliable. If only month, quarter, or year is available, label the timing as approximate.
 - For recent-news discovery, use `$wechat-weixin-search-skill-fast` or its fast workflow to search WeChat Official Account / 搜狗微信 results for the target company.
 - Use WeChat sources mainly for product launches, version updates, brand events, exhibitions, partnerships, company announcements, AI/data/cloud signals, overseas expansion, and sales-useful business context; do not use them as the sole source for revenue, employee size, or financial trend.
 - Treat 搜狗微信 links as reference/search-result links, not confirmed original `mp.weixin.qq.com` article links, unless the user explicitly asks for slower article resolution.
